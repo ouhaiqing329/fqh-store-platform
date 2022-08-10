@@ -1,0 +1,10 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: auth-server
+  redis:
+    host: 47.106.211.14
+    port: 6379
+    password: 123456
+    database: 0
