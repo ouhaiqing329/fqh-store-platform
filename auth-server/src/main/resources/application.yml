@@ -1,10 +1,26 @@
 server:
   port: 8081
+
 spring:
   application:
     name: auth-server
+  profiles:
+    active: @ative@
+
   redis:
     host: 47.106.211.14
     port: 6379
     password: 123456
     database: 0
+
+  cloud:
+    nacos:
+      server-addr: 47.106.211.14
+
+    gateway:
+      routes:
+        - id: order-server
+        uri: lb://order-server
+        #满足断言 跳转到uri地址
+        predicates:
+          - Path=/gateway/order-server

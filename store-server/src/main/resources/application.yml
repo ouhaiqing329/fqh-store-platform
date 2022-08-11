@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: store-server
+  profiles:
+    active: @ative@
+
+  redis:
+    host: 47.106.211.14
+    port: 6379
+    password: 123456
+    database: 0
+
+  cloud:
+    nacos:
+      server-addr: 47.106.211.14
+

@@ -5,14 +5,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>2.5.6</version>
+
     </parent>
 
     <modules>
         <module>auth-server</module>
         <module>common-utils</module>
+        <module>store-server</module>
+        <module>order-server</module>
+        <module>user-server</module>
     </modules>
 
     <groupId>com.fqh</groupId>
