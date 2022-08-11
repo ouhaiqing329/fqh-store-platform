@@ -24,4 +24,8 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-
+#日志配置
+logging:
+  pattern:
+    console: < %d -%p -%m > %n
+  config: classpath:logback-spring.xml
