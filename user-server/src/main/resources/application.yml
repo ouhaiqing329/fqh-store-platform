@@ -16,4 +16,27 @@ spring:
   cloud:
     nacos:
       server-addr: 47.106.211.14
+      discovery:
+        group: store-dev-group
+
+  datasource:
+    url: jdbc:mysql://47.106.211.14:3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: store_2021071
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+#日志配置
+logging:
+  config: classpath:logback-spring.xml
+
+#rocketmq配置
+rocketmq:
+  name-server: 119.91.251.90:9876
+  producer:
+    group: store-dev-producer
+    send-message-timeout: 3000
+  consumer:
+    group: store-dev-comsumer
 

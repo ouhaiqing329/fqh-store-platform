@@ -14,3 +14,9 @@ springBoot+Nacos+Gateway+security+mybatis-plus+redis
 
 项目地址：
 https://github.com/ouhaiqing329/fqh-store-platform/tree/master
+
+
+rocketmq相关：
+- 1.rocketmq控制台打包命令：mvn clean package -Dmaven.test.skip=true 
+- 2.rocketmq控制台启动命令：nohup java -jar rocketmq-dashboard-1.0.1-SNAPSHOT.jar &
+
