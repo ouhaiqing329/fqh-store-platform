@@ -2,7 +2,7 @@
 
 微服务架构
 
-springBoot+Nacos+Gateway+security+mybatis-plus+redis
+springBoot+Nacos+Gateway+security+mybatis-plus+redis+elasticsearch+feign
 
 服务结构：
 - 1.公共组件 commit-utils（使用本地仓库存储/git install打包上传到本地仓库即可）
@@ -20,3 +20,6 @@ rocketmq相关：
 - 1.rocketmq控制台打包命令：mvn clean package -Dmaven.test.skip=true 
 - 2.rocketmq控制台启动命令：nohup java -jar rocketmq-dashboard-1.0.1-SNAPSHOT.jar &
 
+elasticsearch相关：
+- 1.elasticsearch默认地址：http://tx:9200/9300
+- 2.kibana默认地址： http://ali:5601

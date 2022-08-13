@@ -1,5 +1,6 @@
 package com.fqh.order;
 
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,11 +14,14 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableEncryptableProperties
 @Slf4j
-public class Application {
+public class OrderServerApplication {
+
+
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-        log.info("==================store-platform run success！======================");
+        SpringApplication.run(OrderServerApplication.class, args);
+        log.info("==================OrderServer run success！======================");
     }
 
 }
