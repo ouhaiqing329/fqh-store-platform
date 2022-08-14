@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: user-server
+  profiles:
+    active: '@active@'
 
   redis:
     host: ${account.ali}
@@ -13,12 +15,12 @@ spring:
 
   cloud:
     nacos:
-      server-addr: ${account.ali}
+      server-addr: ${account.ali}:8848
       discovery:
         group: store-dev-group
 
   datasource:
-    url: jdbc:mysql://ENC(yeM6Qsmg92+HorSl1w4RAaFhC98koe2z):3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${account.ali}:3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: ${account.mysql.username}
     password: ${account.mysql.password}
     type: com.alibaba.druid.pool.DruidDataSource

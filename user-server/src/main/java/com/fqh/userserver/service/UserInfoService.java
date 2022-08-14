@@ -2,6 +2,7 @@ package com.fqh.userserver.service;
 
 import com.fqh.userserver.entity.User;
 import com.fqh.utils.response.BaseResponseResult;
+import com.fqh.utils.response.UserInfo;
 
 /**
  * 用户信息服务
@@ -17,5 +18,5 @@ public interface UserInfoService {
      * @param username 用户名
      * @return {@link BaseResponseResult}<{@link User}>
      */
-    BaseResponseResult<User> getUserInfo(String username);
+    BaseResponseResult<UserInfo> getUserInfo(String username);
 }

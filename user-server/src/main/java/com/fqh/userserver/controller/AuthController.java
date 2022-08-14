@@ -3,6 +3,7 @@ package com.fqh.userserver.controller;
 import com.fqh.userserver.entity.User;
 import com.fqh.userserver.service.UserInfoService;
 import com.fqh.utils.response.BaseResponseResult;
+import com.fqh.utils.response.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class AuthController {
     private UserInfoService userInfoService;
 
     @GetMapping("/getUserInfo")
-    public BaseResponseResult<User> getUserInfo(String username){
+    public BaseResponseResult<UserInfo> getUserInfo(String username){
         return userInfoService.getUserInfo(username);
     }
 

@@ -50,5 +50,17 @@
         </dependency>
     </dependencies>
 
+    <!-- 多环境配置,默认local环境   -->
+    <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <active>local</active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
 
+    </profiles>
 </project>

@@ -1,35 +1,43 @@
 package com.fqh.auth.config;
 
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
-@Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+/**
+ * 安全配置
+ *
+ * @author fqh
+ * @date 2022/08/14
+ */
+@EnableWebFluxSecurity
+public class SecurityConfig {
 
-    /**
-     * 身份认证
-     *
-     * @param auth 身份验证
-     * @throws Exception 异常
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("root").password("123456");
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     /**
      * 授权
-     *
-     * @param http http
-     * @throws Exception 异常
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/gateway/**")
-                .authenticated();
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity httpSecurity) {
+        httpSecurity
+                .authorizeExchange()
+                .pathMatchers(HttpMethod.OPTIONS).permitAll()
+                //放行登录登出
+                .pathMatchers("/static/**","/auth/login","/auth/logout").permitAll()
+                // 任何请求需要身份认证
+                .pathMatchers("/gateway/**").authenticated()
+                .and()
+                .formLogin()
+                .authenticationManager(authenticationManager)
+                .loginPage("/auth/login")
+
+        ;
+        return httpSecurity.build();
     }
 
 }

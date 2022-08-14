@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: order-server
+  profiles:
+    active: '@active@'
 
   redis:
     host: ${account.ali}

@@ -4,8 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fqh.userserver.entity.User;
 import com.fqh.userserver.mapper.UserMapper;
 import com.fqh.utils.response.BaseResponseResult;
+import com.fqh.utils.response.UserInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService{
@@ -14,8 +18,13 @@ public class UserInfoServiceImpl implements UserInfoService{
     private UserMapper userMapper;
 
     @Override
-    public BaseResponseResult<User> getUserInfo(String username) {
+    public BaseResponseResult<UserInfo> getUserInfo(String username) {
         User user = userMapper.selectOne(new QueryWrapper<>(new User()).lambda().eq(User::getUsername, username));
-        return BaseResponseResult.success(user);
+        UserInfo userInfo = new UserInfo();
+        if (Objects.isNull(user)){
+            return BaseResponseResult.success(null);
+        }
+        BeanUtils.copyProperties(user, userInfo);
+        return BaseResponseResult.success(userInfo);
     }
 }

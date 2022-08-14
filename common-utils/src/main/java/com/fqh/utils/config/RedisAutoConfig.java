@@ -1,9 +1,11 @@
 package com.fqh.utils.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -55,6 +57,7 @@ public class RedisAutoConfig {
      * Redis单节点
      */
     @Bean
+    @Primary
     @ConditionalOnProperty(name = "spring.redis.host")
     public RedisTemplate<String,Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory){
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();

@@ -1,0 +1,6 @@
+auth:
+  server:
+    config:
+      user-server:
+        domain: /user
+        getUserInfo: ${auth.server.config.user-server.domain}/auth/getUserInfo
