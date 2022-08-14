@@ -1,4 +1,4 @@
-package com.fqh.order.document;
+package com.fqh.orderserver.document;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

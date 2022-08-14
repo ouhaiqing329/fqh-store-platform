@@ -1,7 +1,7 @@
-package com.fqh.order.service.impl;
+package com.fqh.orderserver.service.impl;
 
-import com.fqh.order.document.UserDocument;
-import com.fqh.order.service.EsDocumentService;
+import com.fqh.orderserver.document.UserDocument;
+import com.fqh.orderserver.service.EsDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.stereotype.Service;

@@ -59,3 +59,16 @@ account:
   mysql:
     username: ENC(pOVHRpzPR5n9Bd/MJ3IIAw==)
     password: ENC(vSnGLlMnQEgn6+vc6LsZGbNyqe7aGaAb)
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.fqh.storeserver.**.entity,com.fqh.storeserver.**.request,com.fqh.storeserver.**.response
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: delete_mark
+      logic-delete-value: 1
+      logic-not-delete-value: 0

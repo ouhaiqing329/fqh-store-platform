@@ -1,4 +1,4 @@
-package com.fqh.order.service;
+package com.fqh.orderserver.service;
 
 /**
  * es文档服务

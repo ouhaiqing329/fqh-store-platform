@@ -1,6 +1,6 @@
-package com.fqh.order.controller;
+package com.fqh.orderserver.controller;
 
-import com.fqh.order.service.EsDocumentService;
+import com.fqh.orderserver.service.EsDocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fqh.userserver.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.fqh.userserver.entity.User">
+    <!--@mbg.generated-->
+    <!--@Table t_user-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="head_portrait" jdbcType="VARCHAR" property="headPortrait" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="auth_information_id" jdbcType="BIGINT" property="authInformationId" />
+    <result column="detail_information_id" jdbcType="BIGINT" property="detailInformationId" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_mark" jdbcType="INTEGER" property="deleteMark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, username, `password`, sex, birthday, nick_name, head_portrait, introduction, 
+    auth_information_id, detail_information_id, last_login_time, create_time, update_time, 
+    delete_mark
+  </sql>
+
+</mapper>
