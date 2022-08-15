@@ -37,7 +37,7 @@ spring:
             - StripPrefix=2
 jasypt:
   encryptor:
-    password: store-2022
+    password: ${JASYPT_PASSWORD}
 account:
   tx: ENC(auQU1fISSOZgrQGkACJo1XGNi+w5Prm9)
   ali: ENC(yeM6Qsmg92+HorSl1w4RAaFhC98koe2z)

@@ -44,12 +44,10 @@ rocketmq:
   consumer:
     group: store-user-dev-comsumer
 
-
+#环境变量需要输入加密盐
 jasypt:
   encryptor:
-    password: store-2022
-
-
+    password: ${JASYPT_PASSWORD}
 
 account:
   tx: ENC(auQU1fISSOZgrQGkACJo1XGNi+w5Prm9)

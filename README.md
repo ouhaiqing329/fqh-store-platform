@@ -23,3 +23,8 @@ rocketmq相关：
 elasticsearch相关：
 - 1.elasticsearch默认地址：http://tx:9200/9300
 - 2.kibana默认地址： http://ali:5601
+
+jasypt相关：
+* 1.jasypt加密盐使用环境变量存储，启动项目需要加入环境变量JASYPT_PASSWORD=xxx 
+* 2.例如：idea启动需要在Environment variables处添加：JASYPT_PASSWORD=xxx
+* 3.java -jar -JASYPT_PASSWORD=xxx xxx.jar

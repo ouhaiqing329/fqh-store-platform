@@ -47,7 +47,7 @@ rocketmq:
 
 jasypt:
   encryptor:
-    password: store-2022
+    password: ${JASYPT_PASSWORD}
 
 
 
