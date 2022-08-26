@@ -2,10 +2,11 @@ package com.fqh.userserver.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 /**
     * 用户基本信息
@@ -16,7 +17,7 @@ public class User {
     /**
     * 用户Id
     */
-    @Id
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**

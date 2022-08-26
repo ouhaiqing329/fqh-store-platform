@@ -28,16 +28,21 @@ public class SecurityConfig {
                 .authorizeExchange()
                 .pathMatchers(HttpMethod.OPTIONS).permitAll()
                 //放行登录登出
-                .pathMatchers("/static/**","/auth/login","/auth/logout").permitAll()
+                .pathMatchers("/static/**","/auth/login","/auth/logout","/auth/login/index").permitAll()
                 // 任何请求需要身份认证
                 .pathMatchers("/gateway/**").authenticated()
                 .and()
                 .formLogin()
                 .authenticationManager(authenticationManager)
-                .loginPage("/auth/login")
+                .loginPage("/auth/login/index")
+                .and()
+                .csrf()
+                .disable()
 
         ;
         return httpSecurity.build();
     }
+
+
 
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
+
 /**
  * 身份验证管理器
  *
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
+    private UserDetails userDetails = null;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -42,8 +44,9 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
             throw new UsernameNotFoundException("请输入账号密码");
         }
         // 获取封装用户信息的对象
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
+        Mono<UserDetails> detailsMono = userDetailsService.findByUsername(username);
+        detailsMono.doOnNext(result->this.userDetails = result
+        ).subscribe();
         boolean flag = password.equals(userDetails.getPassword());
         // 校验通过
         if (flag) {

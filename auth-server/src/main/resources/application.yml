@@ -35,6 +35,12 @@ spring:
             - Path=/gateway/user-server/**
           filters:
             - StripPrefix=2
+  #提供自定义HTML模板
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    mode: HTML
+    encoding: utf-8
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
