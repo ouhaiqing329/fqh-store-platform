@@ -20,7 +20,7 @@ spring:
         group: store-dev-group
 
   datasource:
-    url: jdbc:mysql://${account.ali}:3306/store?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${account.ali}:3306/user_server?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: ${account.mysql.username}
     password: ${account.mysql.password}
     type: com.alibaba.druid.pool.DruidDataSource

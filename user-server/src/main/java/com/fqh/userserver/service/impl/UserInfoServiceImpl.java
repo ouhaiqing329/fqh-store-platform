@@ -1,9 +1,10 @@
-package com.fqh.userserver.service;
+package com.fqh.userserver.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fqh.userserver.entity.User;
 import com.fqh.userserver.mapper.UserMapper;
 import com.fqh.userserver.request.UserInfoReq;
+import com.fqh.userserver.service.UserInfoService;
 import com.fqh.utils.BeanUtil;
 import com.fqh.utils.response.BaseResponseResult;
 import com.fqh.utils.response.UserInfo;

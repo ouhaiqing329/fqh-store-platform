@@ -49,6 +49,12 @@
             <artifactId>rocketmq-spring-boot-starter</artifactId>
             <version>2.2.1</version>
         </dependency>
+
+        <!--  任务调度   -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-quartz</artifactId>
+        </dependency>
     </dependencies>
 
     <!-- 多环境配置,默认local环境   -->
