@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * 定时任务配置
+ *
  * @author ouhaiqing
  * @date 2022/9/1 9:43
  */

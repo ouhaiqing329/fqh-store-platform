@@ -3,6 +3,8 @@ package com.fqh.userserver.utils;
 import com.fqh.userserver.entity.ScheduleTaskBean;
 import com.fqh.userserver.entity.ScheduleTaskConfig;
 import com.fqh.utils.TimeUtil;
+import com.fqh.utils.enums.ResultEnum;
+import com.fqh.utils.handle.ServiceException;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -23,6 +25,19 @@ public class ScheduleTaskUtil {
 
     private static final Logger log = LoggerFactory.getLogger(ScheduleTaskUtil.class);
 
+    private static Scheduler scheduler;
+
+    static {
+        try {
+            scheduler = StdSchedulerFactory.getDefaultScheduler();
+        } catch (SchedulerException ex) {
+            log.warn("定时任务调度器初始化失败！,exception:",ex);
+            throw new ServiceException(ResultEnum.ERROR);
+        }
+    }
+
+    private ScheduleTaskUtil() {
+    }
 
     /**
      * 创建定时任务
@@ -31,9 +46,6 @@ public class ScheduleTaskUtil {
      */
     public static void createScheduleJob(ScheduleTaskConfig scheduleTaskConfig) {
         try {
-            //使用默认调度器
-            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
-
             //构建Job信息
             JobDetail detail = JobBuilder.newJob(ScheduleTaskBean.class).withIdentity(getJobKey(scheduleTaskConfig.getId())).build();
 
@@ -77,5 +89,23 @@ public class ScheduleTaskUtil {
      */
     private static JobKey getJobKey(Long id) {
         return new JobKey(TASK_PREFIX + id);
+    }
+
+    /**
+     * 运行
+     *
+     * @param scheduleTaskConfig 计划任务配置
+     * @return {@link Boolean}
+     */
+    public static Boolean run(ScheduleTaskConfig scheduleTaskConfig) {
+
+        try {
+            JobDataMap data = new JobDataMap();
+            scheduler.triggerJob(getJobKey(scheduleTaskConfig.getId()), data);
+        } catch (SchedulerException ex) {
+            log.warn("定时任务启动失败！id:{},exception:",scheduleTaskConfig.getId(),ex);
+            return false;
+        }
+        return true;
     }
 }

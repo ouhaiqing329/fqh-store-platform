@@ -16,8 +16,8 @@ public enum ResultEnum {
     ;
 
 
-    public int code;
-    public String desc;
+    public final int code;
+    public final String desc;
 
     ResultEnum(int code, String desc) {
         this.code = code;

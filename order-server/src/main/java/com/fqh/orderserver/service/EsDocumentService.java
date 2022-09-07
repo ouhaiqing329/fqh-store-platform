@@ -1,5 +1,7 @@
 package com.fqh.orderserver.service;
 
+import com.fqh.utils.response.UserInfo;
+
 /**
  * es文档服务
  *
@@ -9,4 +11,6 @@ package com.fqh.orderserver.service;
 public interface EsDocumentService {
 
     void save();
+
+    UserInfo list(Long userId);
 }
