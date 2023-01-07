@@ -18,6 +18,7 @@
         <module>store-server</module>
         <module>order-server</module>
         <module>user-server</module>
+        <module>utilities-server</module>
     </modules>
 
     <groupId>com.fqh</groupId>
