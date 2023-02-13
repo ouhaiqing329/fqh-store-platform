@@ -2,6 +2,7 @@ package com.fqh.storeserver;
 
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -14,6 +15,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @EnableDiscoveryClient
 @EnableEncryptableProperties
 @Slf4j
+@MapperScan(basePackages = "com.fqh.**.mapper")
 public class StoreServerApplication {
     public static void main(String[] args) {
         SpringApplication.run(StoreServerApplication.class,args);
