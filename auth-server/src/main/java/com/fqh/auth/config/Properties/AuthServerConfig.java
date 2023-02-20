@@ -1,4 +1,4 @@
-package com.fqh.auth.config;
+package com.fqh.auth.config.Properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

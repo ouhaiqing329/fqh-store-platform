@@ -29,10 +29,13 @@ public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
     @Override
     public Mono<UserDetails> findByUsername(String username) {
         //根据用户名获取用户信息
-        BaseResponseResult<UserInfo> result = userFeignClient.getUserInfo(username);
-        UserInfo userInfo = result.getData();
+//        BaseResponseResult<UserInfo> result = userFeignClient.getUserInfo(username);
+//        UserInfo userInfo = result.getData();
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername("zs");
+        userInfo.setPassword("123456");
         if (Objects.isNull(userInfo)){
-            throw new UsernameNotFoundException("账号或密码不正确！");
+            return Mono.empty();
         }
         //用户角色权限
         List<GrantedAuthority> authorities = new ArrayList<>();

@@ -2,14 +2,17 @@ package com.fqh.auth.config;
 
 import com.fqh.auth.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.util.Objects;
 
 
 /**
@@ -20,10 +23,10 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class AuthenticationManager implements ReactiveAuthenticationManager {
-    private UserDetails userDetails = null;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
     /**
      * 进行身份验证
      *
@@ -45,17 +48,12 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
         }
         // 获取封装用户信息的对象
         Mono<UserDetails> detailsMono = userDetailsService.findByUsername(username);
-        detailsMono.doOnNext(result->this.userDetails = result
-        ).subscribe();
-        boolean flag = password.equals(userDetails.getPassword());
-        // 校验通过
-        if (flag) {
-            // 将权限信息也封装进去
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-            return Mono.just(token);
-        }
-
-        throw new AuthenticationException("用户密码错误") {
-        };
+        // 密码校验--开启并行线程
+        return detailsMono
+                .publishOn(Schedulers.single())
+                .filter(u -> password.equals(u.getPassword()))
+                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("账号密码错误"))))
+                //转换为Authentication
+                .map(u-> new UsernamePasswordAuthenticationToken(u.getUsername(), u.getPassword()));
     }
 }
