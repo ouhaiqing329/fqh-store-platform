@@ -19,10 +19,15 @@ public class ImageUtil {
     public static final Logger log = LoggerFactory.getLogger(ImageUtil.class);
 
 
+    /**
+     * 获取Servlet下目录
+     *
+     * @return {@link String}
+     */
     public static String getServicePath(){
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-        return request.getSession().getServletContext().getRealPath("/");
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + "/upload/";
     }
 
 }

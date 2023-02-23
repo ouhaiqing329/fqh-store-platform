@@ -28,6 +28,12 @@ public class ProductEntity {
      */
     private Long inventory;
 
+
+    /**
+     * 版本
+     */
+    private Long version;
+
     /**
      * 库存锁
      */

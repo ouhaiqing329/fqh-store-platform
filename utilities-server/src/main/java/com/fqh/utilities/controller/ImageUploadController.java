@@ -5,6 +5,7 @@ import com.fqh.utilities.handle.BaseResponseResult;
 import com.fqh.utilities.handle.ServiceException;
 import com.fqh.utilities.service.ImageService;
 import com.fqh.utilities.utils.ImageUtil;
+import com.sun.imageio.plugins.common.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class ImageUploadController {
     @Autowired
     private ImageService imageService;
 
-    @Value("{showPath}")
-    private String showPath;
+    @Value("${realPath}")
+    private String realPath;
 
     /**
      * 单个图片压缩
@@ -47,7 +48,7 @@ public class ImageUploadController {
         response.setHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode
                 (imageEntity.getImgName() + "." + imageEntity.getType(), "UTF-8") + "\"");
         try {
-            FileInputStream is = new FileInputStream(imageEntity.getStorePath());
+            FileInputStream is = new FileInputStream(realPath + imageEntity.getStorePath());
             out = response.getOutputStream();
             Thumbnails.of(is).scale(1D).outputQuality(0.5).toOutputStream(out);
         } catch (IOException e) {
@@ -61,21 +62,21 @@ public class ImageUploadController {
      */
     @PostMapping("/upload")
     public BaseResponseResult<Void> upload(MultipartFile img){
-        String realPath = ImageUtil.getServicePath();
         String contentType = img.getContentType();
         ImageEntity imageEntity = new ImageEntity();
         if (contentType == null){
             throw new ServiceException("图片类型无法解析！");
         }
         String type = contentType.split("/")[1];
-        File rootFile = new File(realPath + "/compressed/");
+        File rootFile = new File(realPath + "compressed/");
         if (!rootFile.exists()){
             boolean flag = rootFile.mkdir();
             log.error("图片缓存文目录创建{}", flag ? "成功！" : "失败！");
 
         }
         String originalFilename = StringUtils.hasText(img.getOriginalFilename()) ? img.getOriginalFilename().split("\\.")[0] : UUID.randomUUID().toString().replaceAll("-", "");
-        File file = new File(realPath + "/compressed/" + originalFilename + "." + type);
+        String filePath = "compressed/" + originalFilename + "." + type;
+        File file = new File(realPath + filePath);
         //创建字节输出流
         FileOutputStream out = null;
         try {
@@ -85,7 +86,7 @@ public class ImageUploadController {
             while (is.read(bytes) != -1){
                 out.write(bytes);
             }
-            imageEntity.setStorePath(file.getPath());
+            imageEntity.setStorePath(filePath);
         } catch (IOException e) {
             log.error("exception:",e);
             throw new ServiceException("图片上传失败");
@@ -103,7 +104,7 @@ public class ImageUploadController {
         imageEntity.setImgName(originalFilename);
         imageEntity.setType(type);
         imageEntity.setSize(file.length() / 1024000D);
-        return imageService.save(imageEntity)?BaseResponseResult.success(showPath + imageEntity.getStorePath()):BaseResponseResult.error();
+        return imageService.save(imageEntity) ? BaseResponseResult.success(ImageUtil.getServicePath() + imageEntity.getStorePath()) : BaseResponseResult.error();
 
     }
 }
