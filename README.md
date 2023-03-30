@@ -28,3 +28,13 @@ jasypt相关：
 * 1.jasypt加密盐使用环境变量存储，启动项目需要加入环境变量JASYPT_PASSWORD=xxx 
 * 2.例如：idea启动需要在Environment variables处添加：JASYPT_PASSWORD=xxx
 * 3.java -jar -JASYPT_PASSWORD=xxx xxx.jar
+
+
+SSO单点登录是指系统经过一次认证，其他系统接口共享登录状态
+使用Spring security + jwt 做去中心化、无状态登录
+
+具体方案：
+	1.用户请求到达gateway网关，认证请求则直接放行，授权请求需要调用认证服务接口进行授权
+	2.认证服务集成security和jwt提供认证接口，并使用过滤器拦截token，验证token是否过期，过期则验证Cookie中的token是否过期，两个token都过期则放行进行认证，续签token没有过期则生成
+新的token返回给网关，
+	3.授权
