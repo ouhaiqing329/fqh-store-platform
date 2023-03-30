@@ -4,3 +4,6 @@ auth:
       user-server:
         domain: /user
         getUserInfo: ${auth.server.config.user-server.domain}/auth/getUserInfo
+jwt:
+  secret-key: fqh-store@2023
+   
