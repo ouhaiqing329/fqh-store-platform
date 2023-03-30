@@ -17,8 +17,7 @@ import reactor.core.publisher.Mono;
 
 @Configuration
 @Slf4j
-@Order(-10)
-public class JwtTokenFilter implements WebFilter {
+public class JwtTokenFilter implements OncePerRequestFilter {
 
     public static final String HEADER_PREFIX = "Bearer ";
 
@@ -30,24 +29,29 @@ public class JwtTokenFilter implements WebFilter {
 
     /**
      * 过滤器（拦截请求头携带token的请求）
-     *
-     * @param serverWebExchange 服务器网络交换
-     * @param webFilterChain    web过滤器链
-     * @return {@link Mono}<{@link Void}>
      */
     @Override
-    public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
-        ServerHttpRequest request = serverWebExchange.getRequest();
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         String token = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(token) && token.startsWith(HEADER_PREFIX)) {
             token = token.substring(7);
         }
-        if (StringUtils.hasText(token) && this.jwtTokenProvider.verify(token)) {
-            Authentication authentication = this.jwtTokenProvider.getAuthentication(token);
-            //将认证信息写入新的上下文并与上游上下文合并
-            return webFilterChain.filter(serverWebExchange)
-                    .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
-        }
-        return webFilterChain.filter(serverWebExchange);
+        //判断token是否有效
+         if (StringUtils.hasText(token)) {
+             if(this.jwtTokenProvider.verify(token)){
+                Authentication authentication = this.jwtTokenProvider.getAuthentication(token);
+                // 如果请求头中有token，则进行解析，并且设置认证信息
+                SecurityContextHolder.getContext().setAuthentication(getAuthentication(tokenHeader));
+                //请求继续
+                filterChain.doFilter(request,response);
+                return;
+             }else{
+                 //续签
+                 
+             }    
+           
+        }  
+        response.sendError(HttpStatus.UNAUTHORIZED.value());
     }
 }
