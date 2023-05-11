@@ -1,13 +1,16 @@
 package com.fqh.auth.utils;
 
+import com.fqh.auth.api.UserFeignClient;
+import com.fqh.utils.handle.ServiceException;
+import com.fqh.utils.response.BaseResponseResult;
+import com.fqh.utils.response.UserInfo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -21,14 +24,16 @@ public class JwtTokenProvider {
   @Value("${jwt.expireTime}")
   private Integer expireTime;
 
+  @Autowired
+  private UserFeignClient userFeignClient;
+
   /**
    * 创建令牌
    *
    * @param username 用户名
-   * @param params   参数
    * @return {@link String}
    */
-  public String createToken(String username,Authentication authentication, Map<String, String> params) {
+  public String createToken(String username) {
     // JWT头部分信息【Header】
     Map<String, Object> header = new HashMap<>();
     header.put("alg", "HS256");
@@ -41,21 +46,22 @@ public class JwtTokenProvider {
     //用户
     payload.put("sub", "wxapp");
     payload.put("username",username);
-    payload.put("Authentication",authentication);
-    //参数
-    payload.put("params", params);
 
     // 声明Token失效时间
     Calendar instance = Calendar.getInstance();
-    instance.add(Calendar.SECOND, expireTime);// 300s
+    // 300s
+    instance.add(Calendar.HOUR, expireTime);
 
-    // 生成Token
+    //获取用户基本信息
+    BaseResponseResult<UserInfo> userInfo = userFeignClient.getUserInfo(username);
+    payload.put("userInfo",userInfo.getData());
+    // 生成Token 生成xxx.xxx.xxx
     return Jwts.builder()
             .setHeader(header)// 设置Header
             .setClaims(payload) // 设置载核
             .setExpiration(instance.getTime())// 设置生效时间
             .signWith(SignatureAlgorithm.HS256, Base64.getEncoder().encode(secret.getBytes(StandardCharsets.UTF_8))) // 签名,这里采用私钥进行签名,不要泄露了自己的私钥信息
-            .compact(); // 压缩生成xxx.xxx.xxx
+            .compact();
   }
 
   /**
@@ -95,12 +101,29 @@ public class JwtTokenProvider {
               .getBody();
       Date date = new Date();
       if (claims != null && date.before(claims.getExpiration())){
-        LinkedHashMap<String,Object> authentication = claims.get("Authentication", LinkedHashMap.class);
-        return new UsernamePasswordAuthenticationToken(authentication.get("principal"),authentication.get("credentials"), (Collection<? extends GrantedAuthority>) authentication.get("authorities"));
+        //根据用户名获取用户权限
+        String username = claims.get("username").toString();
+        return new UsernamePasswordAuthenticationToken(username,null,null);
       }
     } catch (Exception e) {
       log.warn("获取已认证信息失败:{}", token);
     }
+    return null;
+  }
+
+  /**
+   * 获取数据
+   *
+   * @param resp resp基础响应结果
+   */
+  private <T>T getData(BaseResponseResult<T> resp) {
+    if (resp == null){
+      throw new ServiceException("请求失败，响应为空！");
+    }
+    if (resp.getCode() == 0){
+      return resp.getData();
+    }
+
     return null;
   }
 

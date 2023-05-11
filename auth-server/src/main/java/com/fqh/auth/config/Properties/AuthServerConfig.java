@@ -1,7 +1,7 @@
 package com.fqh.auth.config.Properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * Feign客户端配置
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date 2022/08/14
  */
 @ConfigurationProperties(prefix = "auth.server.config")
-@Component
+@Configuration
 public class AuthServerConfig {
 
     private UserServer userServer;
@@ -18,6 +18,8 @@ public class AuthServerConfig {
 }
 
 class UserServer{
+
+    private String domain;
     /**
      * 根据用户名获取用户信息
      */

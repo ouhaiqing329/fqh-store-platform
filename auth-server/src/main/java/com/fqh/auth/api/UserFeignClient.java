@@ -3,7 +3,7 @@ package com.fqh.auth.api;
 import com.fqh.utils.response.BaseResponseResult;
 import com.fqh.utils.response.UserInfo;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * Feign客户端api
@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author fqh
  * @date 2022/08/14
  */
-@FeignClient(name = "user-server")
+@FeignClient(name = "user-server",
+            url = "${server.config.user-server.domain}"
+)
 public interface UserFeignClient {
 
     /**
@@ -20,7 +22,7 @@ public interface UserFeignClient {
      * @param username 用户名
      * @return {@link UserInfo}
      */
-    @RequestMapping("/user/auth/")
+    @GetMapping("${server.config.user-server.getUserInfo}")
     BaseResponseResult<UserInfo> getUserInfo(String username);
 
 }

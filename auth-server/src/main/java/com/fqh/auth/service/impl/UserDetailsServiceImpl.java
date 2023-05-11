@@ -7,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 用户详细信息服务impl
@@ -20,25 +17,17 @@ import java.util.Objects;
  * @date 2022/08/14
  */
 @Service
-public class UserDetailsServiceImpl implements ReactiveUserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserFeignClient userFeignClient;
 
-
     @Override
-    public Mono<UserDetails> findByUsername(String username) {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //根据用户名获取用户信息
-//        BaseResponseResult<UserInfo> result = userFeignClient.getUserInfo(username);
-//        UserInfo userInfo = result.getData();
-        UserInfo userInfo = new UserInfo();
-        userInfo.setUsername("zs");
-        userInfo.setPassword("123456");
-        if (Objects.isNull(userInfo)){
-            return Mono.empty();
-        }
-        //用户角色权限
+        BaseResponseResult<UserInfo> result = userFeignClient.getUserInfo(username);
+        UserInfo userInfo = result.getData();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        return Mono.just(new User(userInfo.getUsername(),userInfo.getPassword(),authorities));
+        return new User(userInfo.getUsername(),userInfo.getPassword(),authorities);
     }
 }

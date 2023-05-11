@@ -2,17 +2,13 @@ package com.fqh.auth.config;
 
 import com.fqh.auth.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
-import java.util.Objects;
 
 
 /**
@@ -22,7 +18,7 @@ import java.util.Objects;
  * @date 2022/08/14
  */
 @Component
-public class AuthenticationManager implements ReactiveAuthenticationManager {
+public class DefineAuthenticationManager implements AuthenticationManager {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -34,10 +30,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
      * @return {@link Mono}<{@link Authentication}>
      */
     @Override
-    public Mono<Authentication> authenticate(Authentication authentication) {
-        if (authentication.isAuthenticated()){
-            return Mono.just(authentication);
-        }
+    public Authentication authenticate(Authentication authentication) {
         // 获取用户输入的用户名和密码
         final String username = authentication.getName();
         final String password = authentication.getCredentials().toString();
@@ -47,13 +40,11 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
             throw new UsernameNotFoundException("请输入账号密码");
         }
         // 获取封装用户信息的对象
-        Mono<UserDetails> detailsMono = userDetailsService.findByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         // 密码校验--开启并行线程
-        return detailsMono
-                .publishOn(Schedulers.single())
-                .filter(u -> password.equals(u.getPassword()))
-                .switchIfEmpty(Mono.defer(() -> Mono.error(new BadCredentialsException("账号密码错误"))))
-                //转换为Authentication
-                .map(u-> new UsernamePasswordAuthenticationToken(u.getUsername(), u.getPassword()));
+       if (password.equals(userDetails.getPassword())){
+           throw new UsernameNotFoundException("账号密码错误！");
+       }
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword());
     }
 }
