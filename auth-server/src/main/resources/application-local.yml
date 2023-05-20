@@ -1,9 +1,42 @@
-auth:
-  server:
-    config:
-      user-server:
-        domain: /user
-        getUserInfo: ${auth.server.config.user-server.domain}/auth/getUserInfo
+spring:
+  redis:
+    host: ${service.ip}
+    port: 6379
+    password: 123456
+    database: 0
+
+  cloud:
+    nacos:
+      server-addr: ${service.ip}:8848
+      discovery:
+        group: store-dev-group
+
+  datasource:
+    url: jdbc:mysql://${service.ip}:3306/db_auth?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.fqh.auth.**.entity,com.fqh.auth.**.request,com.fqh.auth.**.response
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: delete_mark
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+service:
+  ip: 192.168.3.25
+  config:
+    user-server:
+      domain: http://gateway/user-server/api/
+      getUserInfo: ${auth.server.config.user-server.domain}/auth/getUserInfo
 jwt:
   secret-key: fqh-store@2023
+  secret: kjz
+  expireTime: 2
    

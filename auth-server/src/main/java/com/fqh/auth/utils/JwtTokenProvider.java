@@ -1,12 +1,9 @@
 package com.fqh.auth.utils;
 
-import com.fqh.auth.api.UserFeignClient;
-import com.fqh.utils.handle.ServiceException;
+import com.fqh.auth.handle.ServiceException;
 import com.fqh.utils.response.BaseResponseResult;
-import com.fqh.utils.response.UserInfo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +20,6 @@ public class JwtTokenProvider {
 
   @Value("${jwt.expireTime}")
   private Integer expireTime;
-
-  @Autowired
-  private UserFeignClient userFeignClient;
 
   /**
    * 创建令牌
@@ -53,8 +47,8 @@ public class JwtTokenProvider {
     instance.add(Calendar.HOUR, expireTime);
 
     //获取用户基本信息
-    BaseResponseResult<UserInfo> userInfo = userFeignClient.getUserInfo(username);
-    payload.put("userInfo",userInfo.getData());
+//    BaseResponseResult<UserInfo> userInfo = userFeignClient.getUserInfo(username);
+//    payload.put("userInfo",userInfo.getData());
     // 生成Token 生成xxx.xxx.xxx
     return Jwts.builder()
             .setHeader(header)// 设置Header
@@ -81,7 +75,8 @@ public class JwtTokenProvider {
         return true;
       }
     } catch (Exception e) {
-      log.warn("JWT格式验证失败:{},exception:{}", token,e);
+      log.warn("JWT格式验证失败:{},exception:", token,e);
+      throw new ServiceException("JWT格式验证失败");
     }
     return false;
   }
@@ -107,6 +102,7 @@ public class JwtTokenProvider {
       }
     } catch (Exception e) {
       log.warn("获取已认证信息失败:{}", token);
+      throw new ServiceException("获取已认证信息失败");
     }
     return null;
   }

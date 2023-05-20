@@ -1,14 +1,16 @@
 package com.fqh.auth.service.impl;
 
-import com.fqh.auth.api.UserFeignClient;
-import com.fqh.utils.response.BaseResponseResult;
-import com.fqh.utils.response.UserInfo;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.fqh.auth.entity.UserInfoEntity;
+import com.fqh.auth.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 用户详细信息服务impl
@@ -20,14 +22,16 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserFeignClient userFeignClient;
+    private UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         //根据用户名获取用户信息
-        BaseResponseResult<UserInfo> result = userFeignClient.getUserInfo(username);
-        UserInfo userInfo = result.getData();
+        UserInfoEntity userInfoEntity = userMapper.selectOne(Wrappers.<UserInfoEntity>lambdaQuery().eq(UserInfoEntity::getDeleteMark, 0).eq(UserInfoEntity::getUsername, username));
+        if (Objects.isNull(userInfoEntity)){
+            throw new UsernameNotFoundException("账号密码错误或账号不存在！");
+        }
         List<GrantedAuthority> authorities = new ArrayList<>();
-        return new User(userInfo.getUsername(),userInfo.getPassword(),authorities);
+        return new User(userInfoEntity.getUsername(), userInfoEntity.getPassword(), authorities);
     }
 }

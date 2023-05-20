@@ -41,8 +41,8 @@ public class DefineAuthenticationManager implements AuthenticationManager {
         }
         // 获取封装用户信息的对象
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        // 密码校验--开启并行线程
-       if (password.equals(userDetails.getPassword())){
+        // 密码校验
+       if (!password.equals(userDetails.getPassword())){
            throw new UsernameNotFoundException("账号密码错误！");
        }
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword());

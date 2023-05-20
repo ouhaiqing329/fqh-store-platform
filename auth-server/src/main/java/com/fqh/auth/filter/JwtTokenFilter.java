@@ -1,7 +1,9 @@
 package com.fqh.auth.filter;
 
 
+import com.alibaba.fastjson.JSON;
 import com.fqh.auth.utils.JwtTokenProvider;
+import com.fqh.utils.response.BaseResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -9,11 +11,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,15 +53,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         //放行
         //请求路径
         String requestURI = request.getRequestURI();
-        if (urls.length > 0 && StringUtils.hasText(requestURI)){
+        if (urls.length > 0 && StringUtils.hasText(requestURI)) {
             for (int i = 0; i < urls.length; i++) {
                 //判断白名单url是否有**符号
-                if (urls[i].indexOf("**") > 0 ) {
+                if (urls[i].indexOf("**") > 0) {
                     //正则匹配
                     String regex = urls[i].replaceAll("\\*\\*", "([\\w\\/-]+)");
                     Pattern compile = Pattern.compile(regex);
                     Matcher matcher = compile.matcher(requestURI);
-                    if (matcher.matches()){
+                    if (matcher.matches()) {
                         //请求继续
                         filterChain.doFilter(request, response);
                         return;
@@ -78,17 +83,24 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = token.substring(7);
         }
         //判断是否是第一次登录
-         if (StringUtils.hasText(token)) {
-             //判断token是否有效
-             if(this.jwtTokenProvider.verify(token)){
-                Authentication authentication = this.jwtTokenProvider.getAuthentication(token);
-                // 如果请求头中有token，则进行解析，并且设置认证信息
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                //请求继续
-                filterChain.doFilter(request,response);
-                return;
-             }
-        }  
+        try {
+            if (StringUtils.hasText(token)) {
+                //判断token是否有效
+                if (this.jwtTokenProvider.verify(token)) {
+                    Authentication authentication = this.jwtTokenProvider.getAuthentication(token);
+                    // 如果请求头中有token，则进行解析，并且设置认证信息
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    //请求继续
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }
+        } catch (Exception e) {
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(JSON.toJSONString(BaseResponseResult.error("JWT解析失败！")).getBytes(StandardCharsets.UTF_8));
+            outputStream.flush();
+            return;
+        }
         response.sendError(HttpStatus.UNAUTHORIZED.value());
     }
 }

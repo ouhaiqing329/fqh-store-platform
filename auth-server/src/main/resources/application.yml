@@ -5,36 +5,8 @@ spring:
   application:
     name: auth-server
   profiles:
-    active: '@active@'
+    active: local
 
-  redis:
-    host: 192.168.3.12
-    port: 6379
-    password: 123456
-    database: 0
-
-  cloud:
-    nacos:
-      server-addr: 192.168.3.12:8848
-      discovery:
-        group: store-dev-group
-    gateway:
-      routes:
-        - id: order-server
-          uri: lb://order-server
-          #满足断言 跳转到uri地址
-          predicates:
-            - Path=/gateway/order-server/**
-          filters:
-            - StripPrefix=2
-
-        - id: user-server
-          uri: lb://user-server
-          #满足断言 跳转到uri地址
-          predicates:
-            - Path=/gateway/user-server/**
-          filters:
-            - StripPrefix=2
   #提供自定义HTML模板
 #  thymeleaf:
 #    prefix: classpath:/templates
@@ -52,7 +24,3 @@ spring:
 #    username: ENC(pOVHRpzPR5n9Bd/MJ3IIAw==)
 #    password: ENC(vSnGLlMnQEgn6+vc6LsZGbNyqe7aGaAb)
 #JASYPT_PASSWORD: store-2022
-
-jwt:
-  secret: kjz
-  expireTime: 3600
