@@ -13,6 +13,8 @@ public enum ResultEnum {
      **/
     SUCCESS(0, "success"),
     ERROR(1, "error"),
+    AUTH_FAILED(401,"auth_failed"),
+    NO_ACCESS(403,"no_access"),
     ;
 
 

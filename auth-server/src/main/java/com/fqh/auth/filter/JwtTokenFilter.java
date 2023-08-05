@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.fqh.auth.utils.JwtTokenProvider;
 import com.fqh.utils.response.BaseResponseResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -31,18 +32,16 @@ import java.util.regex.Pattern;
  * @date 2023/05/11
  */
 @Slf4j
+@Order(1)
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     public static final String HEADER_PREFIX = "Bearer ";
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    private String[] urls;
 
-
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider, String[] urls) {
+    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
-        this.urls = urls;
     }
 
     /**
@@ -50,33 +49,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        //放行
-        //请求路径
-        String requestURI = request.getRequestURI();
-        if (urls.length > 0 && StringUtils.hasText(requestURI)) {
-            for (int i = 0; i < urls.length; i++) {
-                //判断白名单url是否有**符号
-                if (urls[i].indexOf("**") > 0) {
-                    //正则匹配
-                    String regex = urls[i].replaceAll("\\*\\*", "([\\w\\/-]+)");
-                    Pattern compile = Pattern.compile(regex);
-                    Matcher matcher = compile.matcher(requestURI);
-                    if (matcher.matches()) {
-                        //请求继续
-                        filterChain.doFilter(request, response);
-                        return;
-                    }
-                } else {
-                    //直接匹配
-                    if (requestURI.equals(urls[i])) {
-                        //请求继续
-                        filterChain.doFilter(request, response);
-                        return;
-                    }
-                }
-
-            }
-        }
         response.setCharacterEncoding("UTF-8");
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(token) && token.startsWith(HEADER_PREFIX)) {
@@ -94,6 +66,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                     return;
                 }
+            }else {
+                //放行
+                filterChain.doFilter(request, response);
+                return;
             }
         } catch (Exception e) {
             ServletOutputStream outputStream = response.getOutputStream();

@@ -6,21 +6,8 @@ spring:
     name: auth-server
   profiles:
     active: local
+jasypt:
+  encryptor:
+    algorithm: PBEWithMD5AndDES # 加密算法
+    password: ${JASYPT_PWD} # 使用加密密钥
 
-  #提供自定义HTML模板
-#  thymeleaf:
-#    prefix: classpath:/templates
-#    suffix: .html
-#    mode: HTML
-#    encoding: utf-8
-#jasypt:
-#  encryptor:
-#    password: ${JASYPT_PASSWORD}
-#account:
-#  ali: ENC(yeM6Qsmg92+HorSl1w4RAaFhC98koe2z)
-#  redis:
-#    password: ENC(R8bnGKQ0yJL+9XF3KjANzA==)
-#  mysql:
-#    username: ENC(pOVHRpzPR5n9Bd/MJ3IIAw==)
-#    password: ENC(vSnGLlMnQEgn6+vc6LsZGbNyqe7aGaAb)
-#JASYPT_PASSWORD: store-2022

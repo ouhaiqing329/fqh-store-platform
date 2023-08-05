@@ -5,12 +5,6 @@ spring:
     password: ENC(0G0O4JG9E1tX2ZGv7W6/sw==)
     database: 0
 
-  cloud:
-    nacos:
-      server-addr: ${service.ip}:8848
-      discovery:
-        group: store-dev-group
-
   datasource:
     url: jdbc:mysql://${service.ip}:3306/db_auth?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
@@ -28,15 +22,8 @@ mybatis-plus:
       logic-delete-field: delete_mark
       logic-delete-value: 1
       logic-not-delete-value: 0
-
-service:
-  ip: ENC(WjMkadU7o28ArViLBLO0uMBxSbfh5L0S)
-  config:
-    user-server:
-      domain: http://gateway/user-server/api/
-      getUserInfo: ${auth.server.config.user-server.domain}/auth/getUserInfo
 jwt:
   secret: ENC(CD2SvfFEMy1nPFnkyu74/tlqtVZ7Hk+B)
   expireTime: 2
-
-   
+service:
+  ip: ENC(WjMkadU7o28ArViLBLO0uMBxSbfh5L0S)

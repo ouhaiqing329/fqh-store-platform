@@ -45,6 +45,6 @@ public class DefineAuthenticationManager implements AuthenticationManager {
        if (!password.equals(userDetails.getPassword())){
            throw new UsernameNotFoundException("账号密码错误！");
        }
-        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),userDetails.getPassword());
+        return new UsernamePasswordAuthenticationToken(userDetails.getUsername(),null);
     }
 }
