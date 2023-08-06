@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/gateway/auth")
+@RequestMapping("/test")
 public class TestController {
 
-    @GetMapping("/test")
+    @GetMapping("/print")
     public BaseResponseResult<Void> test(){
-        System.out.println("test");
+        System.out.println("print ok");
         return BaseResponseResult.success();
     }
 

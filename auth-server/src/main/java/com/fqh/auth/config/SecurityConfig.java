@@ -52,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 白名单
         String[] urls = {
-                "/auth/login",
-                "/auth/logout"
+                "/sso/login",
+                "swagger-ui.html"
         };
 
         http.csrf(AbstractHttpConfigurer::disable)

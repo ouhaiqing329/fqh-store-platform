@@ -2,7 +2,9 @@ package com.fqh.auth.filter;
 
 
 import com.alibaba.fastjson.JSON;
+import com.fqh.auth.handle.ServiceException;
 import com.fqh.auth.utils.JwtTokenProvider;
+import com.fqh.auth.utils.RedisUtil;
 import com.fqh.utils.response.BaseResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,20 +63,24 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 //判断token是否有效
                 if (this.jwtTokenProvider.verify(token)) {
                     Authentication authentication = this.jwtTokenProvider.getAuthentication(token);
+                    //查看该token是否存在白名单
+                    if (!token.equals(RedisUtil.getJwtTokenCache(authentication.getPrincipal().toString()))) {
+                        throw new ServiceException("jwt token hasFailure");
+                    }
                     // 如果请求头中有token，则进行解析，并且设置认证信息
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                     //请求继续
                     filterChain.doFilter(request, response);
                     return;
                 }
-            }else {
+            } else {
                 //放行
                 filterChain.doFilter(request, response);
                 return;
             }
         } catch (Exception e) {
             ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(JSON.toJSONString(BaseResponseResult.error("JWT解析失败！")).getBytes(StandardCharsets.UTF_8));
+            outputStream.write(JSON.toJSONString(BaseResponseResult.error("用户未登录，请登录！")).getBytes(StandardCharsets.UTF_8));
             outputStream.flush();
             return;
         }

@@ -1,11 +1,13 @@
 server:
-  port: 8088
-
+  port: 8099
+  servlet:
+    context-path: /auth
 spring:
   application:
     name: auth-server
   profiles:
     active: local
+
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES # 加密算法
