@@ -18,10 +18,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,6 +56,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+        //从cookie中获取
+        if (!StringUtils.hasText(token)){
+            Cookie[] cookies = request.getCookies();
+            if (Objects.nonNull(cookies) && cookies.length > 0){
+                for (Cookie cookie : cookies) {
+                    if (HttpHeaders.AUTHORIZATION.equals(cookie.getName())){
+                        token = cookie.getValue();
+                    }
+                }
+            }
+        }
         if (StringUtils.hasText(token) && token.startsWith(HEADER_PREFIX)) {
             token = token.substring(7);
         }

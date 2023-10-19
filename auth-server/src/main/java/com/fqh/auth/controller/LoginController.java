@@ -39,7 +39,7 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录")
-    public BaseResponseResult<Void> login(String username, String password) {
+    public BaseResponseResult<String> login(String username, String password) {
         //校验账号密码
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authenticate = defineAuthenticationManager.authenticate(authenticationToken);
@@ -49,7 +49,7 @@ public class LoginController {
         String token = jwtTokenProvider.createToken(authenticate.getPrincipal().toString());
         //生成jwt白名单
         RedisUtil.setJwtTokenCache(username, token);
-        return BaseResponseResult.success(token);
+        return BaseResponseResult.success("登录成功",token);
     }
 
     @PostMapping("/logout")
@@ -69,12 +69,12 @@ public class LoginController {
             log.error("logout failure! exception:", e);
         }
 
-        return BaseResponseResult.success("logout success");
+        return BaseResponseResult.success();
     }
 
     @GetMapping("/checkLogin")
     @ApiOperation(value = "检查登录")
-    public BaseResponseResult<Void> checkLogin(HttpServletRequest request) {
+    public BaseResponseResult<String> checkLogin(HttpServletRequest request) {
         //检查是否即将过期
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(token) && token.startsWith(JwtTokenFilter.HEADER_PREFIX)) {

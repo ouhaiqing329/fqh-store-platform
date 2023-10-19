@@ -42,18 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * 这里仅跳过spring security的过滤器
+     *
+     * @param web
+     * @throws Exception
+     */
     @Override
         public void configure(WebSecurity web) throws Exception {
-        //放行静态资源
-        web.ignoring().antMatchers("/webjars/**", "/static/**","swagger/**","/swagger-ui.html");
+        //放行静态资源,与 servlet.context-path 前缀无关
+        web.ignoring().antMatchers("/webjars/**", "/static/**","/swagger/**","/swagger-ui.html");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 白名单
         String[] urls = {
-                "/sso/login",
-                "swagger-ui.html"
+                "/sso/login"
         };
 
         http.csrf(AbstractHttpConfigurer::disable)

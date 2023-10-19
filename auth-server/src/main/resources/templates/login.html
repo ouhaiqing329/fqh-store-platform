@@ -1,21 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>登录页面</title>
+
+
+    <script th:src="@{../static/jquery/jquery-3.5.1.min.js}"></script>
+
+    <script th:src="@{https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js}"></script>
+
+
+    <link th:href="@{../static/layui/css/layui.css}" rel="stylesheet">
+
+    <script th:src="@{../static/layui/layui.js}"></script>
+
 </head>
 <body>
-    <form action="/auth/login" method="post" style="align-content: center;margin-top: 100px;">
-        <label for="username">账号：</label>
-        <input type="text" name="username" id="username" value="">
-        <br/>
+    <form class="layui-form" action="" method="post" border="1px" style="text-align: center;width: 30%;height: 300px">
+        <div class="layui-form-item">
+            <label class="layui-form-label">输入框</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required  lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码框</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
 
-        <label for="password">密码：</label>
-        <input type="text" name="password" id="password" value="">
-        <br/>
-
-        <input type="submit" name="btn" value="登录">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
     </form>
 
 </body>
+
+<script>
+    //Demo
+    layui.use(['form'], function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            // layer.msg(JSON.stringify(data.field));
+            // return false;
+            $.ajax({
+                url: '/auth/sso/login',
+                method: 'post',
+                dataType: 'json',
+                data: data.field,
+                success: function (res){
+                    console.log(res)
+                    if (res.code == 0){
+                        alert(res.msg)
+                        //存到cookie中,默认2天
+                        $.cookie("Authorization",res.data,{expires: 2,path: '/'})
+                    }else {
+                        alert(res.msg);
+                    }
+                },error: function (errmsg){
+                    alert(errmsg);
+                }
+            });
+
+            return false;
+
+        });
+
+    });
+</script>
+
 </html>

@@ -7,9 +7,11 @@ spring:
     name: auth-server
   profiles:
     active: local
+  thymeleaf:
+    enabled: true
+    cache: false
 
 jasypt:
   encryptor:
     algorithm: PBEWithMD5AndDES # 加密算法
     password: ${JASYPT_PWD} # 使用加密密钥
-
