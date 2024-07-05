@@ -52,11 +52,13 @@ public class RedisAutoConfig {
     }
 
 
-
     /**
      * Redis单节点
+     *
+     * @param lettuceConnectionFactory 生菜连接工厂
+     * @return {@link RedisTemplate}<{@link String}, {@link Object}>
      */
-    @Bean
+    @Bean("redisTemplate")
     @Primary
     @ConditionalOnProperty(name = "spring.redis.host")
     public RedisTemplate<String,Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory){

@@ -35,10 +35,6 @@ public class BaseResponseResult<T> {
         return baseResult(ResultEnum.SUCCESS,null,null);
     }
 
-    public static <T> BaseResponseResult<T> success(String msg){
-        return baseResult(ResultEnum.SUCCESS,msg,null);
-    }
-
     public static <T> BaseResponseResult<T> success(T data){
         return baseResult(ResultEnum.SUCCESS,null,data);
     }
