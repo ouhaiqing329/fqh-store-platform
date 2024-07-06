@@ -1,0 +1,19 @@
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.fqh.utilities.**.entity,com.fqh.utilities.**.request,com.fqh.utilities.**.response
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      logic-delete-field: delete_mark
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+#日志配置
+logging:
+  config: classpath:logback-spring.xml
+
+upload:
+  path: /opt/upload

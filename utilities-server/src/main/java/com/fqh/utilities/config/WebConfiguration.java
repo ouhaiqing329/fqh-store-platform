@@ -6,10 +6,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
+//@Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    @Value("${realPath}")
+    @Value("${upload.path}")
     private String realPath;
 
     /**

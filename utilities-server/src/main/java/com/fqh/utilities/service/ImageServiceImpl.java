@@ -1,4 +1,4 @@
-package com.fqh.utilities.service.impl;
+package com.fqh.utilities.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fqh.utilities.entity.ImageEntity;

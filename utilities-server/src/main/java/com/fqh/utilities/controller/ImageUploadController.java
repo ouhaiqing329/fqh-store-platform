@@ -5,7 +5,6 @@ import com.fqh.utilities.handle.BaseResponseResult;
 import com.fqh.utilities.handle.ServiceException;
 import com.fqh.utilities.service.ImageService;
 import com.fqh.utilities.utils.ImageUtil;
-import com.sun.imageio.plugins.common.ImageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class ImageUploadController {
     @Autowired
     private ImageService imageService;
 
-    @Value("${realPath}")
+    @Value("${upload.path}")
     private String realPath;
 
     /**
