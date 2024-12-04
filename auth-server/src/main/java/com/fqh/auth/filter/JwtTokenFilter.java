@@ -70,7 +70,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && token.startsWith(HEADER_PREFIX)) {
             token = token.substring(7);
         }
-        //判断是否是第一次登录
+        //判断token是否有效
         try {
             if (StringUtils.hasText(token)) {
                 //判断token是否有效
@@ -86,10 +86,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     filterChain.doFilter(request, response);
                     return;
                 }
-            } else {
-                //放行
-                filterChain.doFilter(request, response);
-                return;
             }
         } catch (Exception e) {
             ServletOutputStream outputStream = response.getOutputStream();

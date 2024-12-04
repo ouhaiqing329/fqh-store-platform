@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 @EnableWebSecurity
 @Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
@@ -50,20 +51,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
         public void configure(WebSecurity web) throws Exception {
+        // 白名单
+        String[] urls = {
+                "/static/**",
+                "/sso/login",
+                "/page/**",
+                "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**"
+        };
         //放行静态资源,与 servlet.context-path 前缀无关
-        web.ignoring().antMatchers("/webjars/**", "/static/**","/swagger/**","/swagger-ui.html");
+        web.ignoring().antMatchers(urls);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 白名单
         String[] urls = {
-                "/sso/login"
+                "/sso/logout",
         };
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                //放行指定接口
+                //放行指定接口,仅跳过权限校验过滤器
                 .authorizeRequests()
                 .antMatchers(urls).permitAll()
                 .anyRequest()
@@ -92,6 +100,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.getOutputStream().write(JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8));
                     }
                 })
+                //添加退出登录处理器
+
 
 
         ;

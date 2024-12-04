@@ -1,16 +1,12 @@
 package com.fqh.auth.utils;
 
 import com.fqh.utils.handle.ServiceException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-@Component
 public class RedisUtil {
 
     private static final String JWT_TOKEN_PREFIX = "jwt-token-prefix-username:";
@@ -20,13 +16,8 @@ public class RedisUtil {
 
     private static RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    private RedisTemplate<String, Object> rt;
-
-    //将Spring容器中的值复制到工具类中的redistemplate静态成员对象
-    @PostConstruct
-    public void initRedisTemplate() {
-        RedisUtil.redisTemplate = rt;
+    public static void setRedisTemplate(RedisTemplate<String, Object> redisTemplate) {
+        RedisUtil.redisTemplate = redisTemplate;
     }
 
     /**
