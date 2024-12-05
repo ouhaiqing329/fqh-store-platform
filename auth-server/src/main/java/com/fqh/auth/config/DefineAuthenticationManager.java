@@ -1,6 +1,6 @@
 package com.fqh.auth.config;
 
-import com.fqh.auth.service.impl.UserDetailsServiceImpl;
+import com.fqh.auth.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

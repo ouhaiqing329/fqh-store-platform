@@ -1,4 +1,4 @@
-package com.fqh.auth.service.impl;
+package com.fqh.auth.service;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.fqh.auth.entity.UserInfoEntity;
