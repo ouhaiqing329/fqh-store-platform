@@ -1,14 +1,14 @@
 spring:
-  redis:
-    host: ${service.ip}
-    port: 6379
-    password: ENC(0G0O4JG9E1tX2ZGv7W6/sw==)
-    database: 0
+#  redis:
+#    host: ${service.ip}
+#    port: 6379
+#    password: ENC(0G0O4JG9E1tX2ZGv7W6/sw==)
+#    database: 0
 
   datasource:
     url: jdbc:mysql://${service.ip}:3306/db_auth?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
     username: root
-    password: ENC(jjVz5RkxRj342uPW+MwGCuUkflOWfi0f)
+    password: fqh@mysql
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -23,7 +23,7 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
 jwt:
-  secret: ENC(CD2SvfFEMy1nPFnkyu74/tlqtVZ7Hk+B)
+  secret: fqh@2024
   expireTime: 2
 service:
-  ip: ENC(WjMkadU7o28ArViLBLO0uMBxSbfh5L0S)
+  ip: localhost

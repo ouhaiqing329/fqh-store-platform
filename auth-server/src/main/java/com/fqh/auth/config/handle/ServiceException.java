@@ -1,4 +1,4 @@
-package com.fqh.auth.handle;
+package com.fqh.auth.config.handle;
 
 import com.fqh.utils.enums.ResultEnum;
 

@@ -1,6 +1,6 @@
 package com.fqh.auth.utils;
 
-import com.fqh.auth.handle.ServiceException;
+import com.fqh.auth.config.handle.ServiceException;
 import com.fqh.utils.response.BaseResponseResult;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;

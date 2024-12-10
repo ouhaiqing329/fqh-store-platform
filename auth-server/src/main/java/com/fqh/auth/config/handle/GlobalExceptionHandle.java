@@ -1,4 +1,4 @@
-package com.fqh.auth.handle;
+package com.fqh.auth.config.handle;
 
 import com.fqh.utils.response.BaseResponseResult;
 import lombok.extern.slf4j.Slf4j;

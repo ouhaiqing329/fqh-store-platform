@@ -1,4 +1,4 @@
-package com.fqh.auth.listeners;
+package com.fqh.auth.config.listeners;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.context.WebServerInitializedEvent;

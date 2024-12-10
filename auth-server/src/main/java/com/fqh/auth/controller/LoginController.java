@@ -1,7 +1,7 @@
 package com.fqh.auth.controller;
 
 import com.fqh.auth.config.DefineAuthenticationManager;
-import com.fqh.auth.filter.JwtTokenFilter;
+import com.fqh.auth.config.filter.JwtTokenFilter;
 import com.fqh.auth.utils.JwtTokenProvider;
 import com.fqh.auth.utils.RedisUtil;
 import com.fqh.utils.response.BaseResponseResult;
@@ -48,7 +48,7 @@ public class LoginController {
         //生成Token
         String token = jwtTokenProvider.createToken(authenticate.getPrincipal().toString());
         //生成jwt白名单
-        RedisUtil.setJwtTokenCache(username, token);
+//        RedisUtil.setJwtTokenCache(username, token);
         return BaseResponseResult.success("登录成功",token);
     }
 

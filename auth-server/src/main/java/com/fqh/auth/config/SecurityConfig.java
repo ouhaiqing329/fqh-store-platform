@@ -1,7 +1,7 @@
 package com.fqh.auth.config;
 
 import com.alibaba.fastjson.JSON;
-import com.fqh.auth.filter.JwtTokenFilter;
+import com.fqh.auth.config.filter.JwtTokenFilter;
 import com.fqh.auth.utils.JwtTokenProvider;
 import com.fqh.utils.enums.ResultEnum;
 import com.fqh.utils.response.BaseResponseResult;

@@ -1,8 +1,8 @@
-package com.fqh.auth.filter;
+package com.fqh.auth.config.filter;
 
 
 import com.alibaba.fastjson.JSON;
-import com.fqh.auth.handle.ServiceException;
+import com.fqh.auth.config.handle.ServiceException;
 import com.fqh.auth.utils.JwtTokenProvider;
 import com.fqh.auth.utils.RedisUtil;
 import com.fqh.utils.response.BaseResponseResult;
@@ -23,10 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**

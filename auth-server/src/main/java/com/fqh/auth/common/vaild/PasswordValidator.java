@@ -1,6 +1,6 @@
 package com.fqh.auth.common.vaild;
 
-import com.fqh.auth.handle.ServiceException;
+import com.fqh.auth.config.handle.ServiceException;
 import com.google.common.base.Strings;
 
 import java.util.regex.Matcher;
