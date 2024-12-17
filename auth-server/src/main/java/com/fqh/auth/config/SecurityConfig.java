@@ -56,7 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/static/**",
                 "/sso/login",
                 "/page/**",
-                "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**"
+                "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**", "/webjars/**",
+                "/test/**"
         };
         //放行静态资源,与 servlet.context-path 前缀无关
         web.ignoring().antMatchers(urls);

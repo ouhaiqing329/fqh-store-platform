@@ -23,9 +23,8 @@ public class JasyptUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encrypt("sss","sss"));
-        System.out.println(decrypt("FjBAsf42Sj9oxzq1yQ9nfA==","sss"));
-
-        System.out.println(decrypt("jjVz5RkxRj342uPW+MwGCuUkflOWfi0f","store2022"));
+        System.out.println(encrypt("root","fqh@store2024"));
+        System.out.println(encrypt("fqh@mysql","fqh@store2024"));
+        System.out.println(encrypt("fqh@store2024","fqh@store2024"));
     }
 }
