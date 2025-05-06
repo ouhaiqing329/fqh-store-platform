@@ -1,7 +1,6 @@
 package com.fqh.storeserver.controller;
 
-import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.fqh.storeserver.entity.ProductEntity;
+import com.fqh.storeserver.entity.Product;
 import com.fqh.storeserver.service.ProductManagementService;
 import com.fqh.utils.response.BaseResponseResult;
 import io.swagger.annotations.Api;
@@ -26,7 +25,7 @@ public class ProductManagementController {
 
     @ApiOperation(value = "获取一个商品详情")
     @GetMapping("/getDetail/{productid}")
-    public BaseResponseResult<ProductEntity> getDetail(@PathVariable("productid") Long productid){
+    public BaseResponseResult<Product> getDetail(@PathVariable("productid") Long productid) {
 
         return BaseResponseResult.success();
     }
@@ -34,18 +33,15 @@ public class ProductManagementController {
 
     @ApiOperation(value = "下单一个商品")
     @PostMapping("/addOrder")
-    public BaseResponseResult<ProductEntity> addOrder(@RequestBody ProductEntity productEntity){
+    public BaseResponseResult<Product> addOrder(@RequestBody Product productEntity) {
         int flagNum = productManagementService.addOrder(productEntity);
-        if (flagNum == -1){
+        if (flagNum == -1) {
             return BaseResponseResult.error("商品已售罄！");
-        }else if (flagNum == -2){
+        } else if (flagNum == -2) {
             return BaseResponseResult.error("系统繁忙，请稍后再试！");
         }
         return BaseResponseResult.success();
     }
-
-
-
 
 
 }

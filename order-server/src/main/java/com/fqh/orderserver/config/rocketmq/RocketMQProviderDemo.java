@@ -1,4 +1,4 @@
-package com.fqh.storeserver.config.mq.rocketmq;
+package com.fqh.orderserver.config.rocketmq;
 
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.client.producer.TransactionSendResult;

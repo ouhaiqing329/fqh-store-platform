@@ -1,8 +1,10 @@
 package com.fqh.storeserver.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.fqh.storeserver.entity.Slideshow;
+import com.fqh.storeserver.entity.SlideshowEntity;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface SlideshowMapper extends BaseMapper<Slideshow> {
+@Mapper
+public interface SlideshowMapper extends BaseMapper<SlideshowEntity> {
 
 }

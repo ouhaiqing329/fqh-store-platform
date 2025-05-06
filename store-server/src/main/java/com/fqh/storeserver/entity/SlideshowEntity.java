@@ -2,6 +2,7 @@ package com.fqh.storeserver.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
@@ -23,4 +24,10 @@ public class SlideshowEntity {
     private String createUser;
 
     private Date createTime;
+
+    /**
+     * 删除标识（正常-0|已删除-1）
+     */
+    @TableLogic
+    private Integer deleteMark;
 }

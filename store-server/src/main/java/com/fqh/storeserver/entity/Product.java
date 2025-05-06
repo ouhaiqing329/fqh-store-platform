@@ -1,33 +1,37 @@
 package com.fqh.storeserver.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
-
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * 商品实体
- *
- * @author ouhaiqing
- * @date 2022/9/7 10:01
- */
 @Data
-public class ProductEntity {
-
-    @TableId
-    private Long id;
-
+public class Product {
     /**
-     * 商品名称
+     * id
      */
-    private String productName;
-
+    private String id;
+    /**
+     * 名字
+     */
+    private String name;
+    /**
+     * 价格
+     */
+    private BigDecimal price;
     /**
      * 库存
      */
-    private Long inventory;
-
+    private Integer stock;
+    /**
+     * 图像url
+     */
+    private String imageUrl;
+    /**
+     * 状态
+     */
+    private Integer status;
 
     /**
      * 版本
@@ -86,37 +90,18 @@ public class ProductEntity {
      * 可使用的优惠券（“,”分隔）
      */
     private String enableDiscountCoupon;
-
-    /**
-     * 商品状态（启用-1|停用-0）
-     */
-    private Integer status;
-
     /**
      * 创建时间
      */
-    private Date createTime;
-
-    /**
-     * 创建用户
-     */
-    private Long createUser;
-
+    private LocalDateTime createTime;
     /**
      * 更新时间
      */
-    private Date updateTime;
-
-    /**
-     * 更新用户
-     */
-    private Long updateUser;
+    private LocalDateTime updateTime;
 
     /**
      * 删除标识（正常-0|已删除-1）
      */
     @TableLogic
     private Integer deleteMark;
-
-
 }

@@ -1,8 +1,8 @@
 package com.fqh.storeserver.service;
 
-import com.fqh.storeserver.entity.ProductEntity;
+import com.fqh.storeserver.entity.Product;
 
 public interface ProductManagementService {
 
-    int addOrder(ProductEntity productEntity);
+    int addOrder(Product productEntity);
 }

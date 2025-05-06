@@ -18,18 +18,18 @@ public class SlideshowServiceImpl implements SlideshowService {
     @Autowired
     private SlideshowMapper slideshowMapper;
 
-    //@Override
-    //public List<SlideshowResp> list(String serviceCode) {
-    //    List<SlideshowEntity> slideshowEntityList = slideshowMapper.selectList(Wrappers.<SlideshowEntity>lambdaQuery().eq(SlideshowEntity::getServiceCode, serviceCode));
-    //    if (CollectionUtils.isEmpty(slideshowEntityList)){
-    //        return new ArrayList<>();
-    //    }
-    //    List<SlideshowResp> list = new ArrayList<>();
-    //    slideshowEntityList.forEach(slideshowEntity -> {
-    //        SlideshowResp slideshowResp = new SlideshowResp();
-    //        BeanUtils.copyProperties(slideshowEntity,slideshowResp);
-    //        list.add(slideshowResp);
-    //    });
-    //    return list;
-    //}
+    @Override
+    public List<SlideshowResp> list(String serviceCode) {
+        List<SlideshowEntity> slideshowEntityList = slideshowMapper.selectList(Wrappers.<SlideshowEntity>lambdaQuery().eq(SlideshowEntity::getServiceCode, serviceCode));
+        if (CollectionUtils.isEmpty(slideshowEntityList)){
+            return new ArrayList<>();
+        }
+        List<SlideshowResp> list = new ArrayList<>();
+        slideshowEntityList.forEach(slideshowEntity -> {
+            SlideshowResp slideshowResp = new SlideshowResp();
+            BeanUtils.copyProperties(slideshowEntity,slideshowResp);
+            list.add(slideshowResp);
+        });
+        return list;
+    }
 }
